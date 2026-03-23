@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - Let's Split</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="/blog" class="nav-brand" style="text-decoration: none;">QSplit</a>
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="/split" class="nav-link">Split</a>
+                <a href="/history" class="nav-link">History</a>
+            </div>
+            <button id="theme-toggle-btn" class="theme-toggle" aria-label="Toggle Dark Mode"
+                style="margin-left: 10px;">🌙</button>
+        </div>
+    </nav>
+
+    <div class="auth-wrapper">
+        <!-- Left Pane: Branding & Illustration -->
+        <div class="auth-pane-left">
+            <div class="auth-left-content">
+                <a href="/blog" class="auth-logo">QSplit</a>
+                <div class="auth-hero-text">
+                    <h1>Split expenses <br><span>the smart way</span></h1>
+                    <p>Create your account and start managing shared expenses easily with friends, family, and groups.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Pane: Form -->
+        <div class="auth-pane-right">
+            <div class="auth-form-container">
+                <div class="auth-form-header">
+                    <h2>Create account</h2>
+                    <p>Sign up to get started with QSplit</p>
+                </div>
+
+                <form id="signup-form">
+                    <div class="auth-field">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" required placeholder="Choose a username" />
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="email">Email address</label>
+                        <input type="email" id="email" required placeholder="you@example.com" />
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="phone">Phone number</label>
+                        <input type="tel" id="phone" required placeholder="Enter your phone number" />
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required placeholder="Create a password" />
+                    </div>
+
+                    <button type="submit" class="auth-submit-btn">Sign Up &rarr;</button>
+
+                    <div class="auth-link-footer">
+                        Already have an account? <a href="/login">Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section brand">
+                <h3>QSplit</h3>
+                <p>Your complete expense splitting solution.</p>
+            </div>
+            <div class="footer-section links">
+                <h4>Quick Links</h4>
+                <a href="/blog">About Us</a>
+                <a href="/terms">Terms & Conditions</a>
+                <a href="/contact">Contact Us</a>
+            </div>
+            <div class="footer-section social">
+                <h4>Connect With Us</h4>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-facebook">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="X (Twitter)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-twitter">
+                            <path
+                                d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-instagram">
+                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/signup.js"></script>
+</body>
+
+</html>

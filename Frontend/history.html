@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense History</title>
+    <link rel="stylesheet" href="style.css?v=1.2">
+    <style>
+        /* Modernized Styles for History Page */
+        :root {
+            --btn-whatsapp: #25D366;
+            --btn-whatsapp-hover: #20bd5a;
+            --btn-qr: #3b82f6;
+            --btn-qr-hover: #2563eb;
+            --btn-copy: #8b5cf6;
+            --btn-copy-hover: #7c3aed;
+            --btn-delete: #ef4444;
+            --btn-delete-hover: #dc2626;
+        }
+
+        .history-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .history-header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .back-btn {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--text-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* History Card - now wrapper for individual cards handled in JS */
+        #history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .history-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease;
+        }
+
+        .history-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .expense-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .expense-date {
+            font-size: 0.95rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .dark-mode .expense-date {
+            color: #94a3b8;
+        }
+
+        .expense-amount {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+        }
+
+        .expense-purpose {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .participant-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .participant-item {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .participant-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        /* Summary Section Styling */
+        .history-summary {
+            background: linear-gradient(135deg, var(--primary) 0%, #4338ca 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary-info h3 {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .summary-amount {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .summary-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            backdrop-filter: blur(4px);
+        }
+
+        /* New Layout for Participant Item */
+        .participant-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .participant-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .participant-name {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .participant-phone {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .dark-mode .participant-phone {
+            color: #94a3b8;
+        }
+
+        .participant-amount {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Action Buttons Area */
+        .action-buttons-wrapper {
+            background: rgba(0, 0, 0, 0.02);
+            padding: 8px;
+            border-radius: 12px;
+        }
+
+        .dark-mode .action-buttons-wrapper {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .action-buttons-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid transparent;
+            background: transparent;
+            transition: all 0.2s ease;
+            flex: 1;
+            /* Make buttons equal width */
+            white-space: nowrap;
+        }
+
+        /* Button Variants */
+        .btn-whatsapp {
+            color: var(--btn-whatsapp);
+            border-color: rgba(37, 211, 102, 0.3);
+            background: rgba(37, 211, 102, 0.05);
+        }
+
+        .btn-whatsapp:hover {
+            background: var(--btn-whatsapp);
+            color: white;
+            border-color: var(--btn-whatsapp);
+        }
+
+        .btn-qr {
+            color: var(--btn-qr);
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .btn-qr:hover,
+        .btn-qr.active {
+            background: var(--btn-qr);
+            color: white;
+            border-color: var(--btn-qr);
+        }
+
+        .btn-copy {
+            color: var(--btn-copy);
+            border-color: rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .btn-copy:hover {
+            background: var(--btn-copy);
+            color: white;
+            border-color: var(--btn-copy);
+        }
+
+        .btn-copy.copied {
+            background: var(--btn-whatsapp) !important;
+            color: white !important;
+            border-color: var(--btn-whatsapp) !important;
+        }
+
+        .btn-delete {
+            color: var(--btn-delete);
+            border-color: rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .btn-delete:hover {
+            background: var(--btn-delete);
+            color: white;
+            border-color: var(--btn-delete);
+        }
+
+        .action-btn.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(1);
+        }
+
+        .qr-code-container {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 480px) {
+            .participant-content {
+                flex-direction: row;
+            }
+
+            .action-buttons-row {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar" style="position: sticky; top: 0; z-index: 100;">
+        <a href="/blog" class="nav-brand" style="text-decoration: none;">QSplit</a>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <button id="theme-toggle-btn" class="theme-toggle" aria-label="Toggle Dark Mode">🌙</button>
+            <button onclick="window.location.href='/split'" class="btn-primary"
+                style="padding: 8px 16px; border-radius: 8px; font-size: 0.9rem;">Split</button>
+        </div>
+    </nav>
+    <div class="history-container">
+        <div class="history-header">
+            <h1>Transaction History</h1>
+            <a href="/split" class="back-btn">← Back</a>
+        </div>
+
+        <div id="history-summary"></div>
+
+        <div id="history-list">
+            <p style="text-align:center; padding: 40px; color: #666;">Loading history...</p>
+        </div>
+    </div>
+
+    <script type="module" src="./js/history.js"></script>
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section brand">
+                <h3>QSplit</h3>
+                <p>Your complete expense splitting solution.</p>
+            </div>
+            <div class="footer-section links">
+                <h4>Quick Links</h4>
+                <a href="/blog">About Us</a>
+                <a href="/terms">Terms & Conditions</a>
+                <a href="/contact">Contact Us</a>
+            </div>
+            <div class="footer-section social">
+                <h4>Connect With Us</h4>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-facebook">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="X (Twitter)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-twitter">
+                            <path
+                                d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-instagram">
+                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

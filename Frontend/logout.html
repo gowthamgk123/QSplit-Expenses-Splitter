@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logging out...</title>
+    <script>
+        // Fallback redirection if the server doesn't handle it
+        setTimeout(() => {
+            window.location.href = '/login';
+        }, 1000);
+    </script>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+
+<body>
+    <p>Logging you out...</p>
+</body>
+
+</html>
